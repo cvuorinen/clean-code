@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Clean Code</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- My custom styles -->
+		<link rel="stylesheet" href="css/my-custom-styles.css">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<br><br><br><br>
+					<h1 class="custom-title">Clean Code</h1>
+					<p>
+						<small style="color: lightgrey;">PHPBenelux 2014 UnCon</small>
+					</p>
+					<p>
+						<small style="color: lightgrey;">by <a href="http://cvuorinen.net">Carl Vuorinen</a> / <a href="http://twitter.com/cvuorinen">@cvuorinen</a></small>
+					</p>
+				</section>
+
+                <section>
+                    <h2>What is Clean Code?</h2>
+                    <p class="fragment">Short?</p>
+                    <p class="fragment">Simple?</p>
+                    <p class="fragment">Readable?</p>
+                    <p class="fragment">Self documenting?</p>
+                    <p class="fragment">Testable?</p>
+                    <p class="fragment">SOLID?</p>
+                    <p class="fragment">DRY?</p>
+                </section>
+
+                <section>
+                    <h2>What makes code <br> <em>simple</em> and <strong>readable</strong>?</h2>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Naming things</h2>
+                    <br>
+                    <blockquote>
+                        There are only two hard things in Computer Science: cache invalidation and naming things.
+                        <br>-- Phil Karlton
+                    </blockquote>
+                    <blockquote class="fragment">
+                        ... and off by one errors.
+                    </blockquote>
+
+                    <aside class="notes">
+                        - Convey meaning, intent <br>
+                        - Consistency <br>
+                        - Don't abbreviate <br>
+                        - If naming is hard, maybe method/class is doing too much <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <pre><code data-trim class="php">
+function isMachine($name)
+                    </code></pre>
+                    <pre class="fragment"><code data-trim class="php">
+public function isMachine($name)
+{
+    return str_is($name, gethostname());
+}
+                    </code></pre>
+                    <small class="fragment"><a href="https://github.com/laravel/framework/blob/master/src/Illuminate/Foundation/EnvironmentDetector.php#L98">github.com/laravel/framework/blob/master/src/Illuminate/Foundation/EnvironmentDetector.php#L98</a></small>
+                    <br>
+                    <pre class="fragment"><code data-trim class="php">
+public function hostnameMatches($name)
+                    </code></pre>
+                    <pre class="fragment"><code data-trim class="php">
+public function isCurrentHost($hostname)
+                    </code></pre>
+
+                    <aside class="notes">
+                        "is" beginning implies boolean
+                    </aside>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">What is the <br> meaning of this?</h2>
+                    <br>
+                    <p class="fragment">State your intentions.</p>
+                    <br>
+                    <p class="fragment">Minimize guess work and <br> possibility for misinterpretation.</p>
+
+                    <aside class="notes">
+                        - Comments (Why, not What) <br>
+                        &nbsp;&nbsp;- Iterate items example <br>
+                        - Clear API <br>
+                        - Self documenting <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Avoiding complexity</h2>
+                    <ul>
+                        <li class="fragment">Long methods</li>
+                        <li class="fragment">Nested control structures</li>
+                        <li class="fragment">Classes with many responsibilities</li>
+                        <li class="fragment">Too many dependencies</li>
+                        <li class="fragment">Too much abstraction</li>
+                        <li class="fragment">Overengineering</li>
+                    </ul>
+
+                    <aside class="notes">
+                        - Object calisthenics <br>
+                        - Avoid 'else' <br>
+                        - Every dev is a designer <br>
+                    </aside>
+                </section>
+
+				<section>
+					<pre><code data-trim class="php">
+// Create an empty array if there are no entries.
+if (!isset($blocks[$region])) {
+    $blocks[$region] = array();
+}
+else {
+    $blocks[$region] = _block_render_blocks($blocks[$region]);
+}
+					</code></pre>
+					<small class="fragment"><a href="https://github.com/drupal/drupal/blob/7.x/modules/block/block.module#L681">github.com/drupal/drupal/blob/7.x/modules/block/block.module#L681</a></small>
+					<br>
+					<pre class="fragment"><code data-trim class="php">
+$rendered_blocks = array();
+
+if (isset($blocks[$region])) {
+    $rendered_blocks = _block_render_blocks($blocks[$region]);
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<pre><code data-trim class="php">
+// Use the user's block visibility setting, if necessary.
+if ($block->custom != BLOCK_CUSTOM_FIXED) {
+    if ($user->uid && isset($user->data['block'][$block->module][$block->delta])) {
+        $enabled = $user->data['block'][$block->module][$block->delta];
+    }
+    else {
+        $enabled = ($block->custom == BLOCK_CUSTOM_ENABLED);
+    }
+}
+else {
+    $enabled = TRUE;
+}
+					</code></pre>
+                    <small class="fragment"><a href="https://github.com/drupal/drupal/blob/7.x/modules/block/block.module#L783">github.com/drupal/drupal/blob/7.x/modules/block/block.module#L783</a></small>
+					<br>
+					<pre class="fragment"><code data-trim class="php">
+$enabled = TRUE;
+
+if ($block->custom != BLOCK_CUSTOM_FIXED) {
+    $enabled = ($block->custom == BLOCK_CUSTOM_ENABLED);
+
+    if ($user->uid && isset($user->data['block'][$block->module][$block->delta])) {
+        $enabled = $user->data['block'][$block->module][$block->delta];
+    }
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<pre><code data-trim class="php">
+// Limit publicly queried post_types to those that are publicly_queryable
+if ( isset( $this->query_vars['post_type']) ) {
+    $queryable_post_types = get_post_types( array('publicly_queryable' => true) );
+    if ( ! is_array( $this->query_vars['post_type'] ) ) {
+        if ( ! in_array( $this->query_vars['post_type'], $queryable_post_types ) )
+            unset( $this->query_vars['post_type'] );
+    } else {
+        $this->query_vars['post_type'] = array_intersect( 
+            $this->query_vars['post_type'], 
+            $queryable_post_types
+    	);
+    }
+}
+					</code></pre>
+                    <small class="fragment"><a href="https://github.com/WordPress/WordPress/blob/master/wp-includes/class-wp.php#L298">github.com/WordPress/WordPress/blob/master/wp-includes/class-wp.php#L298</a></small>
+				</section>
+
+				<section>
+					<pre><code data-trim class="php">
+if (isset($this->query_vars['post_type'])) {
+    $this->query_vars['post_type'] = $this->limitPubliclyQueriedPostTypes(
+        $this->query_vars['post_type'],
+        get_post_types( array('publicly_queryable' => true) )
+    );
+}
+
+					</code></pre>
+
+					<pre class="fragment"><code data-trim class="php">
+private function limitPublicPostTypes($post_types, array $queryable_post_types)
+{
+    if (is_array($post_types)) {
+        return array_intersect($post_types, $queryable_post_types);
+    }
+
+    if (in_array($post_types, $queryable_post_types)) {
+        return $post_types;
+    }
+
+    return;
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<pre><code data-trim class="php">
+/**
+ * Filter array or string to only those values that are allowed
+ * 
+ * @param array|string $values         String value or an array of values
+ * @param array        $allowed_values Values that are allowed
+ * 
+ * @return array|string Value(s) that are allowed
+ */
+private function filterArrayOrString($values, array $allowed_values)
+{
+    if (is_array($values)) {
+        return array_intersect($values, $allowed_values);
+    }
+
+    if (in_array($values, $allowed_values)) {
+        return $values;
+    }
+
+    return;
+}
+					</code></pre>
+				</section>
+
+                <section>
+                    <h2>Simplicity is relative</h2>
+
+                    <aside class="notes">
+                        - Junior vs. Senior <br>
+                        - Abstractions and small pieces harder to follow for junior <br>
+                        - Functional example <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <h1>Why?</h1>
+                    <blockquote class="fragment">What's wrong with code that "just works"?</blockquote>
+                </section>
+
+                <section>
+                    <p>Code is written <strong>once</strong>, but read <em>many</em> times.</p>
+                    <br>
+                    <p class="fragment">Adding complexity slows <strong>you</strong> down <em>tomorrow</em>.</p>
+
+                    <aside class="notes">
+                        - Easier to test, fix bugs, maintain <br>
+                        - Future is the most important thing (most of the time) <br>
+                        - Someone (most of the time you) will have to maintain the code <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <blockquote>
+                        Programming is the art of telling another human what one wants the computer to do.
+                        <br>-- Donald Knuth
+                    </blockquote>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Good Enough?</h2>
+                    <br>
+                    <p class="fragment">Maintenance vs. Implementation</p>
+                </section>
+
+                <section>
+                    <h1>How?</h1>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Ask yourself</h2>
+                    <br>
+                    <p class="fragment">Does it make <em>sense</em>?</p>
+                    <br>
+                    <p class="fragment">How well can <strong>others</strong> understand it?</p>
+                    <br>
+                    <p class="fragment">How could this be <em>easier</em> to understand and use?</p>
+
+                    <aside class="notes">
+                        - Read each line/method/class in isolation <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Metrics</h2>
+                    <br>
+                    <p class="fragment">Static code analysis</p>
+
+                    <aside class="notes">
+                        - Mess detector, pdepend, sonar <br>
+                        - Development by the numbers (Anthony) <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Coding Standard</h2>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Code Review</h2>
+
+                    <aside class="notes">
+                        - Peer feedback <br>
+                        - Lead developer <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Future is the most important thing</h2>
+                    <br>
+                    <p class="fragment">Don't make assumptions about the future</p>
+
+                    <aside class="notes">
+                        - Things will change <br>
+                        - Make code that is easy to change <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Constant Refactoring</h2>
+                    <br>
+                    <p class="fragment">Broken window theory</p>
+                    <br>
+                    <p class="fragment">Remove complexity instead of adding it</p>
+                    <br>
+                    <p class="fragment">Hide complexity you cannot remove</p>
+
+                    <aside class="notes">
+                        - When adding new features, fixing bugs <br>
+                        - Design patterns <br>
+                        - YAGNI, Remove unused code <br>
+                        - Facade (hide complexity) <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <h1>Thanks</h1>
+                    <br>
+                    <p><a href="https://joind.in/10482">joind.in/10482</a></p>
+                    <br>
+                    <p><a href="http://twitter.com/cvuorinen">@cvuorinen</a></p>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Further reading</h2>
+                    <br>
+                    <ul>
+                        <li><a href="http://shop.oreilly.com/product/9780596802301.do">The Art of Readable Code</a> by Dustin Boswell and Trevor Foucher</li>
+                        <li><a href="http://shop.oreilly.com/product/0636920022251.do">Code Simplicity</a> by Max Kanat-Alexander</li>
+                    </ul>
+                    <ul>
+                        <li><a href="http://blog.ircmaxell.com/2013/11/beyond-clean-code.html">blog.ircmaxell.com/2013/11/beyond-clean-code.html</a></li>
+                        <li><a href="http://simpleprogrammer.com/2013/04/14/what-makes-code-readable-not-what-you-think/">simpleprogrammer.com/2013/04/14/what-makes-code-readable-not-what-you-think/</a></li>
+                        <li><a href="http://blog.ircmaxell.com/2011/03/difference-between-good-and-good-enough.html">blog.ircmaxell.com/2011/03/difference-between-good-and-good-enough.html</a></li>
+                        <li><a href="http://protalk.me/your-code-sucks-lets-fix-it">protalk.me/your-code-sucks-lets-fix-it</a></li>
+                    </ul>
+                    
+                    <p></p>
+                </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme || 'default', // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+				transitionSpeed: 'default', // default/fast/slow
+
+				// Parallax scrolling
+				//parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				//parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					//{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					//{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
