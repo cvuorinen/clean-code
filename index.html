@@ -43,16 +43,16 @@
 					<br><br><br><br>
 					<h1 class="custom-title">Clean Code</h1>
 					<p>
-						<small style="color: lightgrey;">PHPBenelux 2014 UnCon</small>
+						<small>PHPBenelux 2014 UnCon</small>
 					</p>
 					<p>
-						<small style="color: lightgrey;">by <a href="http://cvuorinen.net">Carl Vuorinen</a> / <a href="http://twitter.com/cvuorinen">@cvuorinen</a></small>
+						<small>by <a href="http://cvuorinen.net">Carl Vuorinen</a> / <a href="http://twitter.com/cvuorinen">@cvuorinen</a></small>
 					</p>
 				</section>
 
-                <section>
-                    <h2>What is Clean Code?</h2>
-                    <p class="fragment">Short?</p>
+                <section data-type-title="What is Clean Code?">
+                    <h2 class="title custom-title"></h2>
+                    <p class="fragment custom-text" data-type-text="Short?"></p>
                     <p class="fragment">Simple?</p>
                     <p class="fragment">Readable?</p>
                     <p class="fragment">Self documenting?</p>
@@ -405,6 +405,10 @@ private function filterArrayOrString($values, array $allowed_values)
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
 
+        <!-- jQuery & my custom js -->
+        <script src="js/jquery-2.0.3.min.js"></script>
+        <script src="js/my-custom-scripts.js"></script>
+
 		<script>
 
 			// Full list of configuration options available here:
@@ -415,7 +419,7 @@ private function filterArrayOrString($values, array $allowed_values)
 				history: true,
 				center: true,
 
-				theme: Reveal.getQueryHash().theme || 'default', // available themes are in /css/theme
+				theme: Reveal.getQueryHash().theme || 'simple', // available themes are in /css/theme
 				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
 				transitionSpeed: 'default', // default/fast/slow
 
