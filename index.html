@@ -21,7 +21,7 @@
 		<link rel="stylesheet" href="css/my-custom-styles.css">
 
 		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+		<link rel="stylesheet" href="lib/css/github.css">
 
 		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
 		<script>
@@ -35,7 +35,7 @@
 
 	<body>
 
-		<div class="reveal">
+		<div class="reveal paper">
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
@@ -43,37 +43,36 @@
 					<br><br><br><br>
 					<h1 class="custom-title">Clean Code</h1>
 					<p>
-						<small style="color: lightgrey;">PHPBenelux 2014 UnCon</small>
+						<small>PHPBenelux 2014 UnCon</small>
 					</p>
 					<p>
-						<small style="color: lightgrey;">by <a href="http://cvuorinen.net">Carl Vuorinen</a> / <a href="http://twitter.com/cvuorinen">@cvuorinen</a></small>
+						<small>by <a href="http://cvuorinen.net">Carl Vuorinen</a> / <a href="http://twitter.com/cvuorinen">@cvuorinen</a></small>
 					</p>
 				</section>
 
                 <section>
-                    <h2>What is Clean Code?</h2>
-                    <p class="fragment">Short?</p>
-                    <p class="fragment">Simple?</p>
-                    <p class="fragment">Readable?</p>
-                    <p class="fragment">Self documenting?</p>
-                    <p class="fragment">Testable?</p>
-                    <p class="fragment">SOLID?</p>
-                    <p class="fragment">DRY?</p>
+                    <h2 class="title custom-title">What is Clean Code?</h2>
+                    <div class="fragment">
+                        <p>Short?</p>
+                        <p>Simple?</p>
+                        <p>Readable?</p>
+                        <p>Self documenting?</p>
+                        <p>Testable?</p>
+                        <p>SOLID?</p>
+                        <p>DRY?</p>
+                    </div>
                 </section>
 
                 <section>
-                    <h2>What makes code <br> <em>simple</em> and <strong>readable</strong>?</h2>
+                    <h3>What makes code <br> <mark>simple</mark> and <mark>readable</mark>?</h3>
                 </section>
 
                 <section>
                     <h2 class="custom-title">Naming things</h2>
                     <br>
-                    <blockquote>
+                    <blockquote class="quote">
                         There are only two hard things in Computer Science: cache invalidation and naming things.
-                        <br>-- Phil Karlton
-                    </blockquote>
-                    <blockquote class="fragment">
-                        ... and off by one errors.
+                        <cite>Phil Karlton</cite>
                     </blockquote>
 
                     <aside class="notes">
@@ -212,15 +211,12 @@ if ( isset( $this->query_vars['post_type']) ) {
 				</section>
 
 				<section>
-					<pre><code data-trim class="php">
-if (isset($this->query_vars['post_type'])) {
+					<pre><code data-trim class="php">if (isset($this->query_vars['post_type'])) {
     $this->query_vars['post_type'] = $this->limitPubliclyQueriedPostTypes(
         $this->query_vars['post_type'],
         get_post_types( array('publicly_queryable' => true) )
     );
-}
-
-					</code></pre>
+}</code></pre>
 
 					<pre class="fragment"><code data-trim class="php">
 private function limitPublicPostTypes($post_types, array $queryable_post_types)
@@ -275,13 +271,13 @@ private function filterArrayOrString($values, array $allowed_values)
 
                 <section>
                     <h1>Why?</h1>
-                    <blockquote class="fragment">What's wrong with code that "just works"?</blockquote>
+                    <p class="fragment"><i>What's wrong with code that "just works"?</i></p>
                 </section>
 
                 <section>
-                    <p>Code is written <strong>once</strong>, but read <em>many</em> times.</p>
+                    <p>Code is written <mark>once</mark>, but read <mark>many</mark> times.</p>
                     <br>
-                    <p class="fragment">Adding complexity slows <strong>you</strong> down <em>tomorrow</em>.</p>
+                    <p class="fragment">Adding complexity slows <mark>you</mark> down <mark>tomorrow</mark>.</p>
 
                     <aside class="notes">
                         - Easier to test, fix bugs, maintain <br>
@@ -292,8 +288,10 @@ private function filterArrayOrString($values, array $allowed_values)
 
                 <section>
                     <blockquote>
-                        Programming is the art of telling another human what one wants the computer to do.
-                        <br>-- Donald Knuth
+                        Programming is the art of telling <br>
+                        another human what one wants <br>
+                        the computer to do.
+                        <cite>Donald Knuth</cite>
                     </blockquote>
                 </section>
 
@@ -310,11 +308,11 @@ private function filterArrayOrString($values, array $allowed_values)
                 <section>
                     <h2 class="custom-title">Ask yourself</h2>
                     <br>
-                    <p class="fragment">Does it make <em>sense</em>?</p>
+                    <p class="fragment">Does it make <mark>sense</mark>?</p>
                     <br>
-                    <p class="fragment">How well can <strong>others</strong> understand it?</p>
+                    <p class="fragment">How well can <mark>others</mark> understand it?</p>
                     <br>
-                    <p class="fragment">How could this be <em>easier</em> to understand and use?</p>
+                    <p class="fragment">How could this be <mark>easier</mark> to understand and use?</p>
 
                     <aside class="notes">
                         - Read each line/method/class in isolation <br>
@@ -374,7 +372,7 @@ private function filterArrayOrString($values, array $allowed_values)
                 </section>
 
                 <section>
-                    <h1>Thanks</h1>
+                    <h1 class="custom-title">Thanks.</h1>
                     <br>
                     <p><a href="https://joind.in/10482">joind.in/10482</a></p>
                     <br>
@@ -405,6 +403,10 @@ private function filterArrayOrString($values, array $allowed_values)
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
 
+        <!-- jQuery & my custom js -->
+        <script src="js/jquery-2.0.3.min.js"></script>
+        <script src="js/my-custom-scripts.js"></script>
+
 		<script>
 
 			// Full list of configuration options available here:
@@ -415,7 +417,7 @@ private function filterArrayOrString($values, array $allowed_values)
 				history: true,
 				center: true,
 
-				theme: Reveal.getQueryHash().theme || 'default', // available themes are in /css/theme
+				theme: Reveal.getQueryHash().theme || 'simple', // available themes are in /css/theme
 				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
 				transitionSpeed: 'default', // default/fast/slow
 
@@ -423,12 +425,15 @@ private function filterArrayOrString($values, array $allowed_values)
 				//parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
 				//parallaxBackgroundSize: '2100px 900px',
 
+                //parallaxBackgroundImage: 'img/paper-texture.jpg',
+                //parallaxBackgroundSize: '3898px 2586px',
+
 				// Optional libraries used to extend on reveal.js
 				dependencies: [
 					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
 					//{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					//{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/highlight/highlight.pack.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
 					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]
