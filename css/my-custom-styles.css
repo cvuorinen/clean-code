@@ -5,38 +5,143 @@
     /*min-height: 600px;*/
 }
 
-.reveal section em {
-    color: greenyellow;
-    font-style: normal;
+.reveal {
+    font-family: 'PT Serif', serif !important;
 }
 
-.reveal section strong {
-    color: lightskyblue;
-    font-weight: normal;
-}
-
-.reveal code {
-    font-family: Consolas, monospace !important;
-}
-
-.reveal pre code {
-    max-height: 600px;
-    width: 1000px;
-    border-radius: 3px;
-    font-size: 20px !important;
-    line-height: 24px !important;
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  font-family: 'PT Serif', serif !important;
+  line-height: 1.2;
 }
 
 .reveal .custom-title {
     font-family: 'Special Elite', serif !important;
     text-transform: none !important;
     letter-spacing: 0 !important;
-
-    text-shadow: 0 1px 0 #cccccc, 0 1px 0 #c9c9c9, 0 2px 0 #bbbbbb, 0 2px 0 #b9b9b9, 0 3px 0 #aaaaaa, 0 3px 1px rgba(0, 0, 0, 0.1), 0 0 3px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.15);
+    color: #333;
 }
 
-.reveal .custom-text {
-    font-family: 'PT Serif', serif !important;
+.reveal .left {
+    text-align: left;
+}
+
+.reveal section mark,
+.reveal section em,
+.reveal section strong {
+    /*display: inline-block;*/
+    padding: 0 5px;
+    margin: 0 -5px;
+    background-color: rgba(255, 245, 0, .5);
+    box-shadow: 5px 0 0 rgba(255, 245, 0, .5), -5px 0 0 rgba(255, 245, 0, .5);
+    border-radius: 8px;
+    line-height: 1.0;
+}
+
+.reveal section em {
+    /*color: greenyellow;*/
+    background-color: rgba(173, 255, 47, .5);
+    font-style: normal;
+}
+
+.reveal section strong {
+    /*color: lightskyblue;*/
+    background-color: rgba(135, 206, 250, .3);
+    font-weight: normal;
+}
+
+/**
+ * Quote marks around "quotes"
+ */
+
+.reveal blockquote {
+    position: relative;
+    padding-left: 65px;
+    text-align: left;
+    box-shadow: none;
+}
+
+.reveal blockquote:before,
+.reveal blockquote:after {
+    font-family: 'PT Serif', Times, serif;
+    font-size: 300%;
+    line-height: 0.1em;
+    color: rgba(150, 150, 150, .5);
+}
+
+.reveal blockquote:before {
+    content: '\201C';
+    margin-left: -65px;
+    margin-right: 0.1em;
+    vertical-align: -0.4em;
+}
+
+.reveal blockquote:after {
+    content: '\201D';
+    margin-left: 0;
+    vertical-align: -0.6em;
+}
+
+.reveal blockquote cite {
+    position: absolute;
+    left: 65px;
+    bottom: 0;
+    margin-bottom: -1.2em;
+}
+
+.reveal blockquote cite:before {
+    content: '-- ';
+}
+
+/**
+ * Ruled paper background
+ * @see http://www.techrepublic.com/blog/web-designer/how-to-get-the-ruled-paper-background-effect-with-css3/
+ */
+.paper {
+    border: 1px solid #d2d2d2;
+    background: #fff;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+    background: -webkit-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;
+    background: -moz-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;
+    background: linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;
+    -webkit-background-size: 100% 20px;
+    -moz-background-size: 100% 20px;
+    background-size: 100% 20px;
+}
+.paper::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    top: 0;
+    left: 50px;
+    bottom: 0;
+    border: 1px solid;
+    border-color: transparent #efe4e4;
+}
+
+/**
+ * Override some code highlight styles
+ */
+.reveal pre {
+    width: 1000px;
+    border-radius: 3px;
+    box-shadow: none;
+    border: 2px solid #f0f0f0;
+}
+.reveal pre code {
+    padding: 10px;
+    max-height: 600px;
+    border-radius: 3px;
+    font-size: 20px !important;
+    line-height: 24px !important;
+    font-family: Consolas, monospace !important;
+}
+.hljs {
+    background: rgba(248, 248, 248, .6) !important;
 }
 
 /** Other nice colors: **/

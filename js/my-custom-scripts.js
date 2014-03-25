@@ -71,7 +71,7 @@ function typeTextToElement(text, targetElement)
     if (remainingText.length > 0) {
         setTimeout(function(){
             typeTextToElement(remainingText, targetElement).done(deferred.resolve)
-        }, randomBetween(50, 250));
+        }, randomBetween(50, 150));
     }
     else {
         deferred.resolve();
