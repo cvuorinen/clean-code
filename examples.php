@@ -155,3 +155,104 @@ private function filterArrayOrString($values, array $allowed_values)
 
     return $values;
 }
+
+
+## https://github.com/drupal/drupal/blob/7.0/modules/simpletest/drupal_web_test_case.php#L615
+
+$all_permutations = array(array());
+foreach ($parameters as $parameter => $values) {
+    $new_permutations = array();
+    // Iterate over all values of the parameter.
+    foreach ($values as $value) {
+        // Iterate over all existing permutations.
+        foreach ($all_permutations as $permutation) {
+            // Add the new parameter value to existing permutations.
+            $new_permutations[] = $permutation + array($parameter => $value);
+        }
+    }
+    // Replace the old permutations with the new permutations.
+    $all_permutations = $new_permutations;
+}
+
+// Rewrite;
+$all_permutations = array(array());
+foreach ($parameters as $parameter => $values) {
+    // To create all possible permutations,
+    // combine current values with all existing permutations
+    $new_permutations = array();
+    foreach ($values as $value) {
+        foreach ($all_permutations as $permutation) {
+            $new_permutations[] = $permutation + array($parameter => $value);
+        }
+    }
+    $all_permutations = $new_permutations;
+}
+
+
+## Functional example
+
+/**
+ * @param Response $header
+ * @param string|false Returns the sessionid string if found or false.
+ */
+private function getSessionId(Response $response)
+{
+    /** @var Header $cookies */
+    $cookies = $response->getHeader('Set-Cookie');
+
+    return ArrayCollection::create($cookies->parseParams())
+        ->map(
+            function (array $headerParameters) {
+                return isset($headerParameters['SESSION_ID']) ?
+                    $headerParameters['SESSION_ID'] :
+                    false;
+            }
+        )
+        ->find(
+            function ($parameter) {
+                return $parameter;
+            }
+        );
+}
+
+
+// Rewrite:
+private function getSessionId(Response $response)
+{
+    /** @var Header $cookies */
+    $cookies = $response->getHeader('Set-Cookie');
+
+    foreach ($cookies->parseParams() as $headerParameters) {
+        if (isset($headerParameters['SESSION_ID'])) {
+            return $headerParameters['SESSION_ID'];
+        }
+    }
+
+    return false;
+}
+
+
+## Regex
+
+preg_match('/^[a-z][a-z\d_]+$/i', $string)
+
+// Rewrite:
+$usernamePattern = "/"
+    . "^[a-z]"     // Must begin with a alphabetic character
+    . "[a-z\d_]+$" // Then 1-n alphanumeric characters and/or underscores
+    . "/i";        // case-insensitive
+
+preg_match($usernamePattern, $username);
+
+
+# https://github.com/symfony/symfony/blob/v2.4.0/src/Symfony/Component/ExpressionLanguage/Lexer.php#L72
+
+} elseif (preg_match('/"([^#"\\\\]*(?:\\\\.[^#"\\\\]*)*)"|\'([^\'\\\\]*(?:\\\\.[^\'\\\\]*)*)\'/As', $expression, $match, null, $cursor)) {
+    // strings
+    $tokens[] = new Token(Token::STRING_TYPE, stripcslashes(substr($match[0], 1, -1)), $cursor + 1);
+    $cursor += strlen($match[0]);
+} elseif (preg_match('/not in(?=[\s(])|\!\=\=|not(?=[\s(])|and(?=[\s(])|\=\=\=|\>\=|or(?=[\s(])|\<\=|\*\*|\.\.|in(?=[\s(])|&&|\|\||matches|\=\=|\!\=|\*|~|%|\/|\>|\||\!|\^|&|\+|\<|\-/A', $expression, $match, null, $cursor)) {
+    // operators
+    $tokens[] = new Token(Token::OPERATOR_TYPE, $match[0], $cursor + 1);
+    $cursor += strlen($match[0]);
+}

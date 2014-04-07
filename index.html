@@ -43,7 +43,7 @@
 					<br><br><br><br>
 					<h1 class="custom-title">Clean Code</h1>
 					<p>
-						<small>PHPBenelux 2014 UnCon</small>
+						<small>W3 School 7.4.2014</small>
 					</p>
 					<p>
 						<small>by <a href="http://cvuorinen.net">Carl Vuorinen</a> / <a href="http://twitter.com/cvuorinen">@cvuorinen</a></small>
@@ -70,8 +70,10 @@
                 <section>
                     <h2 class="custom-title">Naming things</h2>
                     <br>
-                    <blockquote class="quote">
-                        There are only two hard things in Computer Science: cache invalidation and naming things.
+                    <blockquote>
+                        There are only two hard things in <br>
+                        Computer Science: cache invalidation <br>
+                        and naming things.
                         <cite>Phil Karlton</cite>
                     </blockquote>
 
@@ -80,6 +82,7 @@
                         - Consistency <br>
                         - Don't abbreviate <br>
                         - If naming is hard, maybe method/class is doing too much <br>
+                        - Domain name vs. Computer Sience name <br>
                     </aside>
                 </section>
 
@@ -112,14 +115,58 @@ public function isCurrentHost($hostname)
                     <br>
                     <p class="fragment">State your intentions.</p>
                     <br>
+                    <p class="fragment">Say what you mean. <br>
+                        Mean what you say.</p>
+                    <br>
                     <p class="fragment">Minimize guess work and <br> possibility for misinterpretation.</p>
 
                     <aside class="notes">
-                        - Comments (Why, not What) <br>
-                        &nbsp;&nbsp;- Iterate items example <br>
                         - Clear API <br>
                         - Self documenting <br>
                     </aside>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Comments</h2>
+                    <br>
+                    <p>Why, not What</p>
+                </section>
+
+                <section>
+                    <pre><code data-trim class="php">
+$all_permutations = array(array());
+foreach ($parameters as $parameter => $values) {
+    $new_permutations = array();
+    // Iterate over all values of the parameter.
+    foreach ($values as $value) {
+        // Iterate over all existing permutations.
+        foreach ($all_permutations as $permutation) {
+            // Add the new parameter value to existing permutations.
+            $new_permutations[] = $permutation + array($parameter => $value);
+        }
+    }
+    // Replace the old permutations with the new permutations.
+    $all_permutations = $new_permutations;
+}
+                    </code></pre>
+                    <small><a href="https://github.com/drupal/drupal/blob/7.0/modules/simpletest/drupal_web_test_case.php#L615">github.com/drupal/drupal/blob/7.0/modules/simpletest/drupal_web_test_case.php#L615</a></small>
+                </section>
+
+                <section>
+                    <pre><code data-trim class="php">
+$all_permutations = array(array());
+foreach ($parameters as $parameter => $values) {
+    // To create all possible permutations,
+    // combine current values with all existing permutations
+    $new_permutations = array();
+    foreach ($values as $value) {
+        foreach ($all_permutations as $permutation) {
+            $new_permutations[] = $permutation + array($parameter => $value);
+        }
+    }
+    $all_permutations = $new_permutations;
+}
+                    </code></pre>
                 </section>
 
                 <section>
@@ -134,32 +181,9 @@ public function isCurrentHost($hostname)
                     </ul>
 
                     <aside class="notes">
-                        - Object calisthenics <br>
-                        - Avoid 'else' <br>
                         - Every dev is a designer <br>
                     </aside>
                 </section>
-
-				<section>
-					<pre><code data-trim class="php">
-// Create an empty array if there are no entries.
-if (!isset($blocks[$region])) {
-    $blocks[$region] = array();
-}
-else {
-    $blocks[$region] = _block_render_blocks($blocks[$region]);
-}
-					</code></pre>
-					<small class="fragment"><a href="https://github.com/drupal/drupal/blob/7.x/modules/block/block.module#L681">github.com/drupal/drupal/blob/7.x/modules/block/block.module#L681</a></small>
-					<br>
-					<pre class="fragment"><code data-trim class="php">
-$rendered_blocks = array();
-
-if (isset($blocks[$region])) {
-    $rendered_blocks = _block_render_blocks($blocks[$region]);
-}
-					</code></pre>
-				</section>
 
 				<section>
 					<pre><code data-trim class="php">
@@ -176,7 +200,7 @@ else {
     $enabled = TRUE;
 }
 					</code></pre>
-                    <small class="fragment"><a href="https://github.com/drupal/drupal/blob/7.x/modules/block/block.module#L783">github.com/drupal/drupal/blob/7.x/modules/block/block.module#L783</a></small>
+                    <small><a href="https://github.com/drupal/drupal/blob/7.x/modules/block/block.module#L783">github.com/drupal/drupal/blob/7.x/modules/block/block.module#L783</a></small>
 					<br>
 					<pre class="fragment"><code data-trim class="php">
 $enabled = TRUE;
@@ -207,16 +231,18 @@ if ( isset( $this->query_vars['post_type']) ) {
     }
 }
 					</code></pre>
-                    <small class="fragment"><a href="https://github.com/WordPress/WordPress/blob/master/wp-includes/class-wp.php#L298">github.com/WordPress/WordPress/blob/master/wp-includes/class-wp.php#L298</a></small>
+                    <small><a href="https://github.com/WordPress/WordPress/blob/master/wp-includes/class-wp.php#L298">github.com/WordPress/WordPress/blob/master/wp-includes/class-wp.php#L298</a></small>
 				</section>
 
 				<section>
-					<pre><code data-trim class="php">if (isset($this->query_vars['post_type'])) {
+					<pre><code data-trim class="php">
+if (isset($this->query_vars['post_type'])) {
     $this->query_vars['post_type'] = $this->limitPubliclyQueriedPostTypes(
         $this->query_vars['post_type'],
         get_post_types( array('publicly_queryable' => true) )
     );
-}</code></pre>
+}
+                    </code></pre>
 
 					<pre class="fragment"><code data-trim class="php">
 private function limitPublicPostTypes($post_types, array $queryable_post_types)
@@ -260,18 +286,183 @@ private function filterArrayOrString($values, array $allowed_values)
 				</section>
 
                 <section>
+                    <h2 class="custom-title">Object Calisthenics</h2>
+                    <ul class="fragment">
+                        <li>One level of indentation per method</li>
+                        <li>Don't Use The ELSE Keyword</li>
+                        <li>Wrap all Primitives And Strings</li>
+                        <li>First class collections</li>
+                        <li>One dot (arrow) per line</li>
+                        <li>Don't abbreviate</li>
+                        <li>Keep all entities small</li>
+                        <li>No classes with more than two instance variables</li>
+                        <li>No getters/setters/properties</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">&rdquo;Magic&rdquo;</h2>
+                    <p>Unseen control flow makes <br>code harder to follow</p>
+                    <br>
+                    <ul class="fragment">
+                        <li>Magic methods</li>
+                        <li>Events</li>
+                        <li>AOP</li>
+                    </ul>
+                    
+                    <aside class="notes">
+                        - Use moderately <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">preg_match('/a{5,}rgh/')</h2>
+
+                    <pre class="fragment"><code data-trim class="php">
+preg_match('/^[a-z][a-z\d_]+$/i', $string);
+                    </code></pre>
+
+                    <pre class="fragment"><code data-trim class="php">
+$usernamePattern = "/"
+    . "^[a-z]"     // Must begin with a alphabetic character
+    . "[a-z\d_]+$" // Then 1-n alphanumeric characters and/or underscores
+    . "/i";        // case-insensitive
+
+preg_match($usernamePattern, $username);
+                    </code></pre>
+
+                    <aside class="notes">
+                        - Store regex in vars/constants to give them names. <br>
+                        => Reader isn't distracted by the regex. <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <pre><code data-trim class="php">
+} elseif (preg_match('/"([^#"\\\\]*(?:\\\\.[^#"\\\\]*)*)"|\'([^\'\\\\]*
+    (?:\\\\.[^\'\\\\]*)*)\'/As', $expression, $match, null, $cursor)
+) {
+    // strings
+    $tokens[] = new Token(
+        Token::STRING_TYPE,
+        stripcslashes(substr($match[0], 1, -1)), 
+        $cursor + 1
+    );
+    $cursor += strlen($match[0]);
+} elseif (preg_match('/not in(?=[\s(])|\!\=\=|not(?=[\s(])|and(?=[\s(])|\=\=\=|\>\=|
+    or(?=[\s(])|\&lt;\=|\*\*|\.\.|in(?=[\s(])|&amp;&amp;|\|\||matches|\=\=|\!\=|\*|~|%|\/|\>|\|
+    |\!|\^|&amp;|\+|\&lt;|\-/A', $expression, $match, null, $cursor)
+) {
+    // operators
+    $tokens[] = new Token(Token::OPERATOR_TYPE, $match[0], $cursor + 1);
+    $cursor += strlen($match[0]);
+}
+                    </code></pre>
+                    <small><a href="https://github.com/symfony/symfony/blob/v2.4.0/src/Symfony/Component/ExpressionLanguage/Lexer.php#L72">github.com/symfony/symfony/blob/v2.4.0/src/Symfony/Component/ExpressionLanguage/Lexer.php#L72</a></small>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Don't try to be Clever&trade;</h2>
+                    <br>
+                    <p class="fragment">Play Golf on your own time</p>
+
+                    <aside class="notes">
+                        - Professionals write code that others can understand <br>
+                    </aside>
+                </section>
+
+                <section>
                     <h2>Simplicity is relative</h2>
 
                     <aside class="notes">
                         - Junior vs. Senior <br>
                         - Abstractions and small pieces harder to follow for junior <br>
-                        - Functional example <br>
                     </aside>
+                </section>
+
+                <section>
+                    <pre><code data-trim class="php">
+private function getSessionId(Response $response)
+{
+    /** @var Header $cookies */
+    $cookies = $response->getHeader('Set-Cookie');
+
+    return ArrayCollection::create($cookies->parseParams())
+        ->map(
+            function (array $headerParameters) {
+                return isset($headerParameters['SESSION_ID']) ?
+                    $headerParameters['SESSION_ID'] :
+                    false;
+            }
+        )
+        ->find(
+            function ($parameter) {
+                return $parameter;
+            }
+        );
+}
+                    </code></pre>
+
+                    <aside class="notes">
+                        - Should be commented because not obvious to every dev.
+                    </aside>
+                </section>
+
+                <section>
+                    <pre><code data-trim class="php">
+private function getSessionId(Response $response)
+{
+    /** @var Header $cookies */
+    $cookies = $response->getHeader('Set-Cookie');
+
+    foreach ($cookies->parseParams() as $headerParameters) {
+        if (isset($headerParameters['SESSION_ID'])) {
+            return $headerParameters['SESSION_ID'];
+        }
+    }
+
+    return false;
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Functional Programming</h2>
+                    <p style="text-align: left; padding-left: 300px;">
+                        Immutable variables <br>
+                        + functions without state <br>
+                        = no side effects
+                    </p>
+
+                    <aside class="notes">
+                        - Easier to understand and debug and test. <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <h2 class="custom-title">Testing</h2>
+                    <p class="fragment">Tests are a form of documentation</p>
+                    <br>
+                    <p class="fragment">They need to be easily readable</p>
+
                 </section>
 
                 <section>
                     <h1>Why?</h1>
                     <p class="fragment"><i>What's wrong with code that "just works"?</i></p>
+                </section>
+
+                <section>
+                    <img src="img/wtf.jpg" alt="">
+                </section>
+
+                <section>
+                    <blockquote>
+                        Programming is the art of telling <br>
+                        another human what one wants <br>
+                        the computer to do.
+                        <cite>Donald Knuth</cite>
+                    </blockquote>
                 </section>
 
                 <section>
@@ -288,11 +479,13 @@ private function filterArrayOrString($values, array $allowed_values)
 
                 <section>
                     <blockquote>
-                        Programming is the art of telling <br>
-                        another human what one wants <br>
-                        the computer to do.
-                        <cite>Donald Knuth</cite>
+                        If you want your code to be easy to write, make it easy to read.
+                        <cite>Robert C. Martin</cite>
                     </blockquote>
+
+                    <aside class="notes">
+                        - Have to read surrounding code when writing new code <br>
+                    </aside>
                 </section>
 
                 <section>
@@ -325,9 +518,28 @@ private function filterArrayOrString($values, array $allowed_values)
                     <p class="fragment">Static code analysis</p>
 
                     <aside class="notes">
-                        - Mess detector, pdepend, sonar <br>
-                        - Development by the numbers (Anthony) <br>
+                        - Mess detector, pdepend, Jenkins, SonarQube <br>
                     </aside>
+                </section>
+
+                <section>
+                    <img src="img/jenkins-pyramid.png" alt="">
+
+                    <aside class="notes">
+                        - Development by the numbers (ircmaxell) <br>
+                    </aside>
+                </section>
+
+                <section>
+                    <img src="img/jenkins-pmd.png" alt="">
+                </section>
+
+                <section>
+                    <img src="img/sonarcube-dashboard.png" alt="">
+                </section>
+
+                <section>
+                    <img src="img/sonarcube-issues.png" alt="">
                 </section>
 
                 <section>
@@ -372,28 +584,62 @@ private function filterArrayOrString($values, array $allowed_values)
                 </section>
 
                 <section>
+                    <h3>Clean code doesn't usually <br>happen on first try.</h3>
+                    <h3>You have to <br><mark>iterate</mark> and <mark>refractor</mark>.</h3>
+                </section>
+
+                <section>
+                    <blockquote>
+                        Clean code always looks like it was written by someone who cares. There is nothing obvious you can do to make it better.
+                        <cite>Michael Feathers</cite>
+                    </blockquote>
+                </section>
+
+                <!-- <section>
                     <h1 class="custom-title">Thanks.</h1>
                     <br>
                     <p><a href="https://joind.in/10482">joind.in/10482</a></p>
                     <br>
                     <p><a href="http://twitter.com/cvuorinen">@cvuorinen</a></p>
+                </section> -->
+
+                <section>
+                    <h2 class="custom-title">Further reading</h2>
+                    <img src="img/clean-code.jpg" alt="" style="height: 250px;">
+                    &nbsp;
+                    <img src="img/art-of-readable-code.jpg" alt="" style="height: 250px;">
+                    &nbsp;
+                    <img src="img/code-simplicity.jpg" alt="" style="height: 250px;">
+                    <ul>
+                        <li><a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882">Clean Code: A Handbook of Agile Software Craftsmanship</a> by Robert C. Martin</li>
+                        <li><a href="http://shop.oreilly.com/product/9780596802301.do">The Art of Readable Code</a> by Dustin Boswell and Trevor Foucher</li>
+                        <li><a href="http://shop.oreilly.com/product/0636920022251.do">Code Simplicity</a> by Max Kanat-Alexander</li>
+                    </ul>
                 </section>
 
                 <section>
                     <h2 class="custom-title">Further reading</h2>
-                    <br>
-                    <ul>
-                        <li><a href="http://shop.oreilly.com/product/9780596802301.do">The Art of Readable Code</a> by Dustin Boswell and Trevor Foucher</li>
-                        <li><a href="http://shop.oreilly.com/product/0636920022251.do">Code Simplicity</a> by Max Kanat-Alexander</li>
-                    </ul>
                     <ul>
                         <li><a href="http://blog.ircmaxell.com/2013/11/beyond-clean-code.html">blog.ircmaxell.com/2013/11/beyond-clean-code.html</a></li>
                         <li><a href="http://simpleprogrammer.com/2013/04/14/what-makes-code-readable-not-what-you-think/">simpleprogrammer.com/2013/04/14/what-makes-code-readable-not-what-you-think/</a></li>
                         <li><a href="http://blog.ircmaxell.com/2011/03/difference-between-good-and-good-enough.html">blog.ircmaxell.com/2011/03/difference-between-good-and-good-enough.html</a></li>
                         <li><a href="http://protalk.me/your-code-sucks-lets-fix-it">protalk.me/your-code-sucks-lets-fix-it</a></li>
+                        <li><a href="http://blog.ircmaxell.com/2013/05/development-by-numbers-slides.html">blog.ircmaxell.com/2013/05/development-by-numbers-slides.html</a></li>
                     </ul>
+                </section>
+
+                <section>
+                    <div style="width: 50%; float: left;">
+                        <blockquote class="twitter-tweet" lang="en"><p>&quot;Code is like humor. When you *have* to explain it, it’s bad&quot; - <a href="https://twitter.com/housecor">@housecor</a></p>&mdash; About Programming (@abt_programming) <a href="https://twitter.com/abt_programming/statuses/448101448564629504">March 24, 2014</a></blockquote>
                     
-                    <p></p>
+                        <blockquote class="twitter-tweet" lang="en"><p>“The cheapest time to refactor code is right now.” Great advices by <a href="https://twitter.com/bugroll">@bugroll</a> <a href="http://t.co/GGEQ8Bc3e1">http://t.co/GGEQ8Bc3e1</a> <a href="https://twitter.com/search?q=%23refactoring&amp;src=hash">#refactoring</a> <a href="https://twitter.com/search?q=%23cleancode&amp;src=hash">#cleancode</a></p>&mdash; Luca Guidi (@jodosha) <a href="https://twitter.com/jodosha/statuses/446683743907237888">March 20, 2014</a></blockquote>
+                    </div>
+
+                    <div style="width: 50%; float: left;">
+                        <blockquote class="twitter-tweet" lang="en"><p>Beautiful code, like beautiful prose, is the result of many small decisions. The right method length here, the right object name there.</p>&mdash; DHH (@dhh) <a href="https://twitter.com/dhh/statuses/447042824622850048">March 21, 2014</a></blockquote>
+
+                        <blockquote class="twitter-tweet" lang="en"><p>Your coding standard is in the code. A Word document about your standard says the standard isn&#39;t followed <a href="https://twitter.com/search?q=%23cleancode&amp;src=hash">#cleancode</a> <a href="https://twitter.com/search?q=%23agile&amp;src=hash">#agile</a></p>&mdash; lpcarignan (@lpcarignan) <a href="https://twitter.com/lpcarignan/statuses/128837284559724544">October 25, 2011</a></blockquote>
+                    </div>
                 </section>
 
 			</div>
@@ -406,6 +652,9 @@ private function filterArrayOrString($values, array $allowed_values)
         <!-- jQuery & my custom js -->
         <script src="js/jquery-2.0.3.min.js"></script>
         <script src="js/my-custom-scripts.js"></script>
+
+        <!-- Twitter embeds -->
+        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 		<script>
 
