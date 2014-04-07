@@ -30,16 +30,20 @@
     text-align: left;
 }
 
+.reveal section img {
+    border: none;
+}
+
 .reveal section mark,
 .reveal section em,
 .reveal section strong {
-    /*display: inline-block;*/
-    padding: 0 5px;
-    margin: 0 -5px;
+    display: inline-block;
+    padding: 0 3px;
+    margin: 0 -3px;
     background-color: rgba(255, 245, 0, .5);
-    box-shadow: 5px 0 0 rgba(255, 245, 0, .5), -5px 0 0 rgba(255, 245, 0, .5);
-    border-radius: 8px;
-    line-height: 1.0;
+    box-shadow: 3px 0 0 rgba(255, 245, 0, .5), -3px 0 0 rgba(255, 245, 0, .5);
+    border-radius: 6px;
+    line-height: 1.2;
 }
 
 .reveal section em {
@@ -133,7 +137,7 @@
     border: 2px solid #f0f0f0;
 }
 .reveal pre code {
-    padding: 10px;
+    padding: 0 10px;
     max-height: 600px;
     border-radius: 3px;
     font-size: 20px !important;
@@ -141,7 +145,7 @@
     font-family: Consolas, monospace !important;
 }
 .hljs {
-    background: rgba(248, 248, 248, .6) !important;
+    background: rgba(248, 248, 248, .7) !important;
 }
 
 /** Other nice colors: **/
